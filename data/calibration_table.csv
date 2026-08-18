@@ -1,0 +1,6 @@
+bucket,n_games,actual_accuracy
+Toss-up (0-10%),72,0.5
+Slight edge (10-20%),68,0.45588235294117646
+Moderate (20-30%),60,0.5666666666666667
+Confident (30-50%),135,0.7037037037037037
+Very confident (50%+),130,0.8
