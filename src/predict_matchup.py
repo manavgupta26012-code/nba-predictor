@@ -5,21 +5,19 @@ Predicts a HYPOTHETICAL matchup between any two teams -- including games
 that haven't been played yet. Uses each team's most current known form
 (their latest rolling stats) rather than looking up an actual game.
 
-As of this version, real injury status IS available (see
-collect_injury_report.py, which pulls the NBA's official daily injury
-report) -- but it's only published ~1 day ahead of each game by league
-rule, so it's only reliable for near-term games, not weeks out. For games
-beyond that window, this module still lets the user OPTIONALLY simulate
-"what if this team's top scorer sits out" as a manual scenario toggle.
-
-Usage (see also the Streamlit UI in app.py):
-    from predict_matchup import build_hypothetical_row
-    row = build_hypothetical_row("LAL", "BOS", "2026-08-15", team_rows, player_rows, games)
+Real injury status IS available (see collect_injury_report.py, which
+pulls the NBA's official daily injury report) -- but it's only published
+~1 day ahead of each game by league rule, so it's only reliable for
+near-term games, not weeks out. For games beyond that window, this module
+still lets the user OPTIONALLY simulate "what if this team's top scorer
+sits out" as a manual scenario toggle.
 """
 
 import re
 import pandas as pd
 import build_features as bf
+import home_advantage as ha
+import chemistry as chem
 
 BOX_SCORE_COLS = bf.BOX_SCORE_COLS
 
@@ -28,6 +26,8 @@ BOX_SCORE_COLS = bf.BOX_SCORE_COLS
 # players often do play, and treating them as automatically out would
 # overstate the impact more often than it's right.
 OUT_STATUSES = {"Out", "Doubtful"}
+
+DEFENSIVE_STAT_COLS = ["FG3_PCT", "FG_PCT", "PTS"]  # what opponents have done AGAINST this team
 
 
 def _normalize_injury_name(name: str) -> str:
@@ -40,10 +40,7 @@ def _normalize_injury_name(name: str) -> str:
 
 
 def load_injury_lookup(injury_report: pd.DataFrame) -> dict:
-    """Builds a {player_name: status} lookup from collect_injury_report.py's output.
-    If a player appears multiple times (e.g. listed for more than one report
-    snapshot), the last one wins -- injury_report should already be just the
-    single most recent report, so this is mostly a safety net."""
+    """Builds a {player_name: status} lookup from collect_injury_report.py's output."""
     lookup = {}
     for _, row in injury_report.iterrows():
         name = _normalize_injury_name(row["PLAYER_NAME"])
@@ -51,20 +48,12 @@ def load_injury_lookup(injury_report: pd.DataFrame) -> dict:
     return lookup
 
 
-DEFENSIVE_STAT_COLS = ["FG3_PCT", "FG_PCT", "PTS", "TOV"]  # what opponents have done AGAINST this team
-
-
 def _add_allowed_stats(team_rows: pd.DataFrame, stat_cols=DEFENSIVE_STAT_COLS) -> pd.DataFrame:
     """
     For each team-game, pulls the OPPONENT's stats from that same game and
     labels them ALLOWED_<stat> -- e.g. ALLOWED_FG3_PCT is what the other
-    team shot from three against this team. This is what powers matchup
-    insights like "Team A shoots 3s well, and Team B has allowed a high
-    3PT% lately" -- an offense-vs-opponent's-defense comparison, not just
-    two teams' own stats compared side by side.
-
-    Uses a self-join on GAME_ID (each game has exactly 2 team rows), so no
-    new data collection is needed -- it's already in raw_team_game_logs.csv.
+    team shot from three against this team. Uses a self-join on GAME_ID
+    (each game has exactly 2 team rows), so no new data collection needed.
     """
     keep = ["GAME_ID", "TEAM_ABBREVIATION"] + list(stat_cols)
     df = team_rows[keep].copy()
@@ -109,9 +98,7 @@ def get_latest_top_players(player_rows: pd.DataFrame, top_n: int = 3) -> pd.Data
     DEPRECATED for season-ahead predictions -- kept only for reference.
     This attributes players to whichever team they were on IN THE HISTORICAL
     BOX SCORES, which is wrong once a player is traded, signs elsewhere, or
-    retires over the offseason (e.g. it would keep crediting a player to his
-    OLD team). Use get_current_top_players() instead, which cross-references
-    actual current rosters.
+    retires over the offseason. Use get_current_top_players() instead.
     """
     top_players = bf.compute_top_players_features(player_rows, top_n=top_n)
     top_players = top_players.merge(
@@ -128,15 +115,10 @@ def get_current_top_players(player_rows: pd.DataFrame, current_rosters: pd.DataF
     """
     Ranks each team's top N players BY IMPACT (Game Score -- see
     build_features.compute_game_score, not raw points) using their ACTUAL
-    CURRENT roster (from collect_current_rosters.py) combined with each
-    player's own full box score history (regardless of which team he
-    played for when those games happened). This correctly handles trades/
-    free agency -- a player who moved teams over the offseason is credited
-    to his NEW team, using stats earned on his OLD team.
-
-    Players with no game history yet (e.g. rookies, or anyone not in
-    player_rows) simply can't be ranked and won't appear -- this is a
-    real, stated limitation, not silently wrong data.
+    CURRENT roster combined with each player's own full box score history.
+    Correctly handles trades/free agency -- a player who moved teams over
+    the offseason is credited to his NEW team, using stats earned on his
+    OLD team.
     """
     df = player_rows.copy()
     df["GAME_DATE"] = pd.to_datetime(df["GAME_DATE"])
@@ -175,11 +157,8 @@ def get_current_top_players(player_rows: pd.DataFrame, current_rosters: pd.DataF
 
 
 def get_h2h_snapshot(games: pd.DataFrame, home_team: str, away_team: str, window: int = 5) -> dict:
-    """
-    Last `window` meetings between these two teams (any order, using ALL
-    known history since we're projecting past the end of the dataset),
-    from the perspective of `home_team` playing at home in the hypothetical game.
-    """
+    """Last `window` meetings between these two teams (any order, using ALL
+    known history), from the perspective of `home_team` playing at home."""
     pair_games = games[
         ((games["HOME_TEAM_ABBREVIATION"] == home_team) & (games["AWAY_TEAM_ABBREVIATION"] == away_team)) |
         ((games["HOME_TEAM_ABBREVIATION"] == away_team) & (games["AWAY_TEAM_ABBREVIATION"] == home_team))
@@ -208,30 +187,21 @@ def build_hypothetical_row(home_team: str, away_team: str, game_date, team_rows:
                             player_snapshot: pd.DataFrame = None,
                             advanced_stats: pd.DataFrame = None,
                             shot_locations: pd.DataFrame = None,
-                            injury_lookup: dict = None) -> pd.Series:
+                            injury_lookup: dict = None,
+                            home_away_splits: pd.DataFrame = None,
+                            chemistry_metrics: pd.DataFrame = None) -> pd.Series:
     """
     Builds a single feature row for a hypothetical HOME_TEAM vs AWAY_TEAM
     matchup on GAME_DATE, using each team's most current known form.
-    Returns a pd.Series with the same field names generate_narrative() and
-    explain_prediction() expect, so it can be fed straight into the
-    existing dashboard code.
 
-    `injury_lookup` (from load_injury_lookup, built from the NBA's real
-    official injury report) takes priority over the manual "assume out"
-    toggles when both are available for the same player -- real data over
-    a hypothetical. The toggles remain useful for games far enough out
-    that no injury report exists yet (the NBA only publishes ~1 day ahead).
+    `injury_lookup` (from the NBA's real official injury report) takes
+    priority over the manual "assume out" toggles when both are available.
 
-    For predicting MANY games at once (e.g. a full schedule), pass
-    precomputed `team_snapshot` / `player_snapshot` (from
-    get_latest_team_snapshot / get_latest_top_players) instead of raw
-    `team_rows` / `player_rows`, so those expensive rolling calculations
-    only run once instead of once per game.
+    For predicting MANY games at once, pass precomputed `team_snapshot` /
+    `player_snapshot` instead of raw `team_rows` / `player_rows`.
 
-    `advanced_stats` / `shot_locations` (from collect_advanced_stats.py,
-    indexed by TEAM_ABBREVIATION) are optional, narrative-only enrichment
-    -- offensive/defensive rating, pace, and paint scoring. They are NOT
-    used by the trained model (no retraining needed to add them).
+    `advanced_stats` / `shot_locations` / `home_away_splits` are optional,
+    narrative-only enrichment -- NOT used by the trained model.
     """
     game_date = pd.to_datetime(game_date)
     snap = team_snapshot if team_snapshot is not None else get_latest_team_snapshot(team_rows)
@@ -251,9 +221,6 @@ def build_hypothetical_row(home_team: str, away_team: str, game_date, team_rows:
     row["AWAY_ROLL_WIN_PCT"] = a["ROLL_WIN_PCT"]
     row["DIFF_WIN_PCT"] = h["ROLL_WIN_PCT"] - a["ROLL_WIN_PCT"]
 
-    # Defensive susceptibility -- what each team has allowed opponents to do
-    # to them recently. Used for offense-vs-opponent's-defense matchup
-    # insights (e.g. "Team A shoots 3s well AND Team B defends them poorly").
     for col in DEFENSIVE_STAT_COLS:
         if f"ROLL_ALLOWED_{col}" in h.index:
             row[f"HOME_ROLL_ALLOWED_{col}"] = h[f"ROLL_ALLOWED_{col}"]
@@ -286,12 +253,6 @@ def build_hypothetical_row(home_team: str, away_team: str, game_date, team_rows:
                     row[f"{prefix}_PLAYER{rank}_PPG"] = ppg
                     row[f"{prefix}_PLAYER{rank}_IMPACT"] = impact
 
-                    # Real injury data (if available for this player) takes
-                    # priority over the manual toggle. The toggle only
-                    # applies to rank 1 (no real way to simulate injuries to
-                    # specific role players); real injury data applies to
-                    # any ranked player, since it's actual reported status,
-                    # not a guess.
                     injury_status = injury_lookup.get(name) if (injury_lookup and pd.notna(name)) else None
                     if injury_status in OUT_STATUSES:
                         is_out = 1
@@ -308,8 +269,6 @@ def build_hypothetical_row(home_team: str, away_team: str, game_date, team_rows:
     else:
         row["DIFF_MISSING_IMPACT"] = None
 
-    # Narrative-only enrichment (not model features): offensive/defensive
-    # rating, pace, shooting efficiency, and paint scoring.
     if advanced_stats is not None:
         adv_fields = ["OFF_RATING", "DEF_RATING", "NET_RATING", "PACE", "EFG_PCT", "TS_PCT", "TM_TOV_PCT"]
         for prefix, team in [("HOME", home_team), ("AWAY", away_team)]:
@@ -323,5 +282,25 @@ def build_hypothetical_row(home_team: str, away_team: str, game_date, team_rows:
             if team in shot_locations.index:
                 for f in paint_fields:
                     row[f"{prefix}_{f}"] = shot_locations.loc[team, f]
+
+    if home_away_splits is not None:
+        if home_team in home_away_splits.index:
+            hh = home_away_splits.loc[home_team]
+            row["HOME_TEAM_HOME_WIN_PCT"] = hh["HOME_WIN_PCT"]
+            row["HOME_TEAM_HOME_MARGIN"] = hh["HOME_AVG_MARGIN"]
+            row["HOME_TEAM_HOME_ADVANTAGE"] = hh["HOME_ADVANTAGE"]
+        if away_team in home_away_splits.index:
+            aa = home_away_splits.loc[away_team]
+            row["AWAY_TEAM_AWAY_WIN_PCT"] = aa["AWAY_WIN_PCT"]
+            row["AWAY_TEAM_AWAY_MARGIN"] = aa["AWAY_AVG_MARGIN"]
+
+    if chemistry_metrics is not None:
+        for prefix, team in [("HOME", home_team), ("AWAY", away_team)]:
+            if team in chemistry_metrics.index:
+                c = chemistry_metrics.loc[team]
+                row[f"{prefix}_AST_PER_FGM"] = c["AST_PER_FGM"]
+                row[f"{prefix}_ROLL_TOV_CHEM"] = c["ROLL_TOV"]
+                row[f"{prefix}_AST_PERCENTILE"] = c["AST_PERCENTILE"]
+                row[f"{prefix}_TOV_PERCENTILE"] = c["TOV_PERCENTILE"]
 
     return pd.Series(row)

@@ -1,0 +1,72 @@
+name: Refresh NBA Data
+
+# Runs automatically every 6 hours, and can also be triggered manually
+# from the GitHub Actions tab (useful for testing before trusting the
+# schedule, or forcing a refresh right before a big slate of games).
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # needed to commit the updated data files back
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      # continue-on-error on each step: if ONE data source fails (e.g. the
+      # NBA's site is briefly down, or the odds API is rate-limited), the
+      # other sources should still update and get committed -- one failure
+      # shouldn't block everything else.
+
+      - name: Collect schedule
+        run: python src/collect_schedule.py --season 2026-27
+        continue-on-error: true
+
+      - name: Collect team game logs
+        run: python src/collect_data.py --seasons 2026-27
+        continue-on-error: true
+
+      - name: Collect player game logs
+        run: python src/collect_player_data.py --seasons 2026-27
+        continue-on-error: true
+
+      - name: Collect current rosters
+        run: python src/collect_current_rosters.py --season 2026-27
+        continue-on-error: true
+
+      - name: Collect advanced team stats
+        run: python src/collect_advanced_stats.py
+        continue-on-error: true
+
+      - name: Collect injury report
+        run: python src/collect_injury_report.py
+        continue-on-error: true
+
+      - name: Collect live odds
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python src/collect_odds.py
+        continue-on-error: true
+
+      - name: Commit and push if data actually changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "Automated data refresh $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push

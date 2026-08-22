@@ -200,6 +200,14 @@ def compute_top_players_features(player_rows: pd.DataFrame,
     No leakage: a team's rankings for today's game come only from games
     strictly before today; today's box score only updates the roster
     tracker AFTER today's feature values are recorded.
+
+    PERFORMANCE NOTE: this used to filter day_rows per ranked player
+    (day_rows[day_rows["PLAYER_ID"] == pid]) and use iterrows() to update
+    the roster tracker -- both are slow, and became a real bottleneck once
+    running across multiple full seasons of player logs instead of one.
+    Replaced with an O(1) dict lookup and itertuples(), verified to
+    produce byte-identical output to the original on test data before
+    being adopted.
     """
     df = player_rows.copy()
     df["GAME_DATE"] = pd.to_datetime(df["GAME_DATE"])
@@ -225,11 +233,16 @@ def compute_top_players_features(player_rows: pd.DataFrame,
             game_id = day_rows["GAME_ID"].iloc[0]
             row = {"GAME_ID": game_id, "TEAM_ABBREVIATION": team}
 
+            # O(1) dict lookup instead of filtering day_rows per ranked
+            # player -- built once per game-date (cheap: one row per
+            # player who played that day) instead of re-filtering the
+            # dataframe up to top_n times per game-date.
+            minutes_by_player = dict(zip(day_rows["PLAYER_ID"], day_rows["MIN_NUM"]))
+
             ranked = sorted(roster_latest.items(), key=lambda kv: kv[1][0], reverse=True)[:top_n]
             missing_impact = 0.0
             for rank, (pid, (impact, ppg, name)) in enumerate(ranked, start=1):
-                today = day_rows[day_rows["PLAYER_ID"] == pid]
-                played = len(today) > 0 and today["MIN_NUM"].iloc[0] > 0
+                played = minutes_by_player.get(pid, 0) > 0
                 row[f"PLAYER{rank}_NAME"] = name
                 row[f"PLAYER{rank}_PPG"] = ppg
                 row[f"PLAYER{rank}_IMPACT"] = impact
@@ -245,10 +258,14 @@ def compute_top_players_features(player_rows: pd.DataFrame,
             results.append(row)
 
             # Update the roster's known impact/scoring averages using TODAY's
-            # data, for use starting with this team's NEXT game (not this one).
-            for _, r in day_rows.iterrows():
-                if pd.notna(r["PLAYER_ROLL_IMPACT"]):
-                    roster_latest[r["PLAYER_ID"]] = (r["PLAYER_ROLL_IMPACT"], r["PLAYER_ROLL_PTS"], r["PLAYER_NAME"])
+            # data, for use starting with this team's NEXT game (not this
+            # one). itertuples() instead of iterrows() -- iterrows()
+            # rebuilds a full pandas Series per row (slow); itertuples()
+            # returns a lightweight namedtuple, typically 10-100x faster
+            # for this kind of per-row access pattern.
+            for r in day_rows.itertuples():
+                if pd.notna(r.PLAYER_ROLL_IMPACT):
+                    roster_latest[r.PLAYER_ID] = (r.PLAYER_ROLL_IMPACT, r.PLAYER_ROLL_PTS, r.PLAYER_NAME)
 
     return pd.DataFrame(results)
 
