@@ -1,17 +1,18 @@
-Injury Report: 11/27/26 11:15 AM
+Injury Report: 11/27/26 08:15 PM
 GameDate GameTime Matchup Team PlayerName CurrentStatus Reason
-11/27/2026 07:00(ET) MIA@NYK MiamiHeat Antetokounmpo,Giannis Probable Injury/Illness-RightGroinTendinitis
+11/27/2026 07:00(ET) MIA@NYK MiamiHeat Antetokounmpo,Giannis Available Injury/Illness-RightGroinTendinitis
 Donaldson,Tre Out GLeague-Two-Way
 Goldin,Vladislav Out GLeague-Two-Way
 Injury/Illness-RightAnkle
-Wiggins,Andrew Probable
+Wiggins,Andrew Available
 Impingement
-NewYorkKnicks Anunoby,OG Doubtful Injury/Illness-LeftCalfStrain
-Clarkson,Jordan Questionable Injury/Illness-RightPlantarFasciitis
+NewYorkKnicks Anunoby,OG Out Injury/Illness-LeftCalfStrain
+Clarkson,Jordan Out Injury/Illness-RightPlantarFasciitis
 Drummond,Andre Out Injury/Illness-ConcussionProtocol
-Injury/Illness-LeftAdductor
-McBride,Miles Questionable
-Tightness
+McBride,Miles Out Injury/Illness-LeftAthleticPubalgia
+Injury/Illness-RightAbdominal
+Towns,Karl-Anthony Available
+Contusion
 07:30(ET) BKN@TOR BrooklynNets Bilodeau,Tyler Out GLeague-Two-Way
 Jefferson,Joshua Out GLeague-OnAssignment
 Powell,Drake Out GLeague-OnAssignment
@@ -21,14 +22,18 @@ Wagner,Moritz Out
 Management
 TorontoRaptors Barrett,RJ Out Injury/Illness-RightHamstringStrain
 Bittle,Nate Out GLeague-Two-Way
-Leonard,Kawhi Out Injury/Illness-LeftKneeInjury
-Page1of7
-Injury Report: 11/27/26 11:15 AM
+Page1of10
+Injury Report: 11/27/26 08:15 PM
+Injury/Illness-LeftKneeInjury
+Leonard,Kawhi Out
 Management
-Martin,Alijah Questionable Injury/Illness-LeftKneeSoreness
+Martin,Alijah Available Injury/Illness-LeftKneeSoreness
 McCullarJr.,Kevin Out GLeague-Two-Way
 Smith,Malachi Out GLeague-Two-Way
-MIL@DET MilwaukeeBucks Jones,Kam Out GLeague-Two-Way
+Injury/Illness-LeftAnkle
+MIL@DET MilwaukeeBucks Jakucionis,Kasparas Out
+Tenosynovitis
+Jones,Kam Out GLeague-Two-Way
 Markovic,Bogoljub Out GLeague-OnAssignment
 Ryan,Cormac Out GLeague-Two-Way
 Injury/Illness-RightKnee
@@ -37,28 +42,33 @@ Tendinopathy
 Duren,Jalen Out Injury/Illness-RightHamstringStrain
 Okorie,Ebuka Out Injury/Illness-LeftObliqueStrain
 Onyenso,Ugonna Out GLeague-Two-Way
-Prince,Taurean Out Injury/Illness-RightArthroscopy
+Injury/Illness-RightKnee
+Prince,Taurean Out
+Arthroscopy
 Robinson,Duncan Out Injury/Illness-LeftQuadricepsStrain
 Injury/Illness-LeftHamstringInjury
 PHI@IND Philadelphia76ers Brown,Jaylen Out
 Management
-Embiid,Joel Questionable Injury/Illness-Illness
+Embiid,Joel Available Injury/Illness-Illness
+Page2of10
+Injury Report: 11/27/26 08:15 PM
 Injury/Illness-RightAchillesTendon
 Hukporti,Ariel Out
 Rupture/Tear
+Injury/Illness-LeftHamstringInjury
+Wade,Dean Out
+Management
 Injury/Illness-RightACLRepair/
 IndianaPacers Furphy,Johnny Out
 Surgery
-Page2of7
-Injury Report: 11/27/26 11:15 AM
 Haliburton,Tyrese Out Injury/Illness-LeftHamstringStrain
 Injury/Illness-LeftHamstringInjury
-McConnell,T.J. Questionable
+McConnell,T.J. Out
 Management
-NanceJr.,Larry Questionable Injury/Illness-RightAnkleBruise
-OubreJr.,Kelly Questionable Injury/Illness-RightHandLaceration
+NanceJr.,Larry Available Injury/Illness-RightAnkleBruise
+OubreJr.,Kelly Available Injury/Illness-RightHandLaceration
 Sheppard,Ben Out Injury/Illness-LeftMeniscusSurgery
-08:00(ET) ATL@BOS AtlantaHawks Castro,Rafael Doubtful GLeague-Two-Way
+08:00(ET) ATL@BOS AtlantaHawks Castro,Rafael Out GLeague-Two-Way
 Gueye,Mouhamed Out Injury/Illness-LeftFootFracture
 Landale,Jock Out Injury/Illness-RightGreatToeSprain
 McCollum,CJ Out Injury/Illness-LeftCalfStrain
@@ -66,17 +76,17 @@ Newell,Asa Out Injury/Illness-LeftGreatToeSurgery
 Injury/Illness-RightACLRepair/
 Veesaar,Henri Out
 Surgery
-Wilson,Jalen Doubtful GLeague-Two-Way
+Wilson,Jalen Out GLeague-Two-Way
 BostonCeltics Carter,Devin Out GLeague-Two-Way
+Page3of10
+Injury Report: 11/27/26 08:15 PM
 Mitchell,Dillon Out GLeague-Two-Way
-Robinson,Mitchell Questionable Injury/Illness-Illness
+Robinson,Mitchell Out Injury/Illness-Illness
 Williams,Amari Out GLeague-Two-Way
 Injury/Illness-RightMedialAnkle
 08:30(ET) MEM@MIN MemphisGrizzlies Boozer,Cameron Out
 Sprain
-Edey,Zach Questionable Injury/Illness-LeftAnkleSoreness
-Page3of7
-Injury Report: 11/27/26 11:15 AM
+Edey,Zach Available Injury/Illness-LeftAnkleSoreness
 Grant,Jerami Out Injury/Illness-LeftCalfStrain
 Injury/Illness-Left5thMetatarsal
 Jackson,GG Out
@@ -86,8 +96,8 @@ Injury/Illness-LumbarDisc
 PippenJr.,Scotty Out
 Herniation
 Saunders,Richie Out Injury/Illness-RightKneeSurgery
-Stewart,Isaiah Questionable Injury/Illness-RightHipSoreness
-MinnesotaTimberwolves Ball,LaMelo Questionable Injury/Illness-LeftAnkleSprain
+Stewart,Isaiah Out Injury/Illness-RightHipSoreness
+MinnesotaTimberwolves Ball,LaMelo Out Injury/Illness-LeftAnkleSprain
 Beringer,Joan Available Injury/Illness-FaceMask
 Clark,Jaylen Out Injury/Illness-RightHamstringStrain
 Injury/Illness-RightAchillesTendon
@@ -96,22 +106,31 @@ Repair/Surgery
 Injury/Illness-RightKnee
 Edwards,Anthony Out
 Arthroscopy
+Page4of10
+Injury Report: 11/27/26 08:15 PM
 Zikarsky,Rocco Out GLeague-Two-Way
 09:00(ET) DAL@PHX DallasMavericks Biberovic,Tarik Out Injury/Illness-RightHeelBursitis
 deLarrea,Sergio Out Injury/Illness-RightKneeSprain
+Injury/Illness-LeftKneeInjury
+Irving,Kyrie Out
+Management
 Lawal,Tobi Out Injury/Illness-RightGroinStrain
 LivelyII,Dereck Out Injury/Illness-RightFootSurgery
 Martin,Caleb Available Injury/Illness-RightThumbSplint
-Page4of7
-Injury Report: 11/27/26 11:15 AM
-PhoenixSuns Williams,Mark Out Injury/Illness-LeftShoulderSurgery
+PhoenixSuns Reath,Duop Out GLeague-Two-Way
+Spencer,Pat Out GLeague-Two-Way
+Timme,Drew Out GLeague-Two-Way
+Williams,Mark Out Injury/Illness-LeftShoulderSurgery
 09:30(ET) DEN@UTA DenverNuggets HolmesII,DaRon Out GLeague-OnAssignment
 Hopkins,Bryce Out GLeague-Two-Way
 Whitmore,Cam Out GLeague-Two-Way
 UtahJazz Aidoo,Jonas Out GLeague-Two-Way
+Bamba,Mo Questionable Injury/Illness-Illness
 Bufkin,Kobe Out GLeague-Two-Way
 Hayes,Jaxson Questionable Injury/Illness-LeftKneeStrain
 Ingram,Harrison Out GLeague-Two-Way
+Page5of10
+Injury Report: 11/27/26 08:15 PM
 JacksonJr.,Jaren Out Injury/Illness-RightMCLTear
 Markkanen,Lauri Out Injury/Illness-RightHandFracture
 Injury/Illness-Right2ndPlantar
@@ -126,18 +145,23 @@ Moody,Moses Out
 Repair/Surgery
 Porzingis,Kristaps Out NotWithTeam
 PortlandTrailBlazers Krejci,Vit Out Injury/Illness-LeftAnkleFracture
+Injury/Illness-RightCalfTightness/
+Lillard,Damian Out
+Soreness
 Morant,Ja Out Injury/Illness-LeftHamstringStrain
-Sharpe,Shaedon Out Injury/Illness-RightMeniscus
-Page5of7
-Injury Report: 11/27/26 11:15 AM
+Injury/Illness-RightMeniscus
+Sharpe,Shaedon Out
 Surgery
+Yang,Hansen Out Injury/Illness-LeftAnkleSprain
 Injury/Illness-RightHeelContusion/
 Youngblood,Chris Out
 BoneBruise
 LAL@SAS LosAngelesLakers Grimes,Quentin Available Injury/Illness-RightFingerSplint
 Injury/Illness-LeftHeelContusion/
-Reaves,Austin Questionable
+Reaves,Austin Available
 BoneBruise
+Page6of10
+Injury Report: 11/27/26 08:15 PM
 SanAntonioSpurs Brown,Maliq Out GLeague-Two-Way
 Fox,De'Aaron Questionable Injury/Illness-RightShinContusion
 Injury/Illness-LeftHipExternal
@@ -146,30 +170,84 @@ RotatorStrain
 Harris,Tobias Out Injury/Illness-LeftCalfStrain
 Quaintance,Jayden Out Injury/Illness-RightKneeSurgery
 NOP@LAC NewOrleansPelicans Dia,Malik Out GLeague-Two-Way
-Mathurin,Bennedict Doubtful Injury/Illness-LeftPlantarFasciitis
+Mathurin,Bennedict Out Injury/Illness-LeftPlantarFasciitis
 Murray,Dejounte Out Injury/Illness-LeftAnkleSprain
 PierreJr.,Jaron Out GLeague-Two-Way
 Reese,Julian Out GLeague-Two-Way
-Watford,Trendon Probable Injury/Illness-RightAnkleSprain
+Watford,Trendon Available Injury/Illness-RightAnkleSprain
 Injury/Illness-RightKneeInjury
 LAClippers Beal,Bradley Out
 Management
-Christie,Cam Questionable GLeague-Two-Way
-Page6of7
-Injury Report: 11/27/26 11:15 AM
-Martinelli,Nick Questionable GLeague-Two-Way
+Christie,Cam Out GLeague-Two-Way
+Martinelli,Nick Available GLeague-Two-Way
 Injury/Illness-LeftRotatorCuff
 Miller,Jordan Out
 Surgery
-Pickett,Jalen Questionable GLeague-Two-Way
-11/28/2026 05:00(ET) ORL@WAS OrlandoMagic NOTYETSUBMITTED
-WashingtonWizards NOTYETSUBMITTED
+Pickett,Jalen Out GLeague-Two-Way
+Injury/Illness-RightHighAnkle
+11/28/2026 05:00(ET) ORL@WAS OrlandoMagic Banchero,Paolo Out
+Sprain
+Page7of10
+Injury Report: 11/27/26 08:15 PM
+Black,Anthony Questionable Injury/Illness-Backsoreness
+Castleton,Colin Out GLeague-Two-Way
+Injury/Illness-LeftKneeInjury
+Isaac,Jonathan Out
+Management
+Injury/Illness-LeftAnkleinjury
+Nelson,Izaiyah Out
+recovery
+Injury/Illness-RightPartiallytorn
+Penda,Noah Out
+hamstring
+ReturntoCompetition
+PorterJr.,Kevin Out
+Reconditioning
+WashingtonWizards Beekman,Reece Out GLeague-Two-Way
+Champagnie,Justin Out Injury/Illness-RightFootSurgery
+Okpara,Felix Out GLeague-Two-Way
+Vukcevic,Tristan Out Injury/Illness-LeftHipImpingement
+Injury/Illness-LeftACLRepair/
+Watkins,Jamir Out
+Surgery
 06:00(ET) BKN@CHA BrooklynNets NOTYETSUBMITTED
-CharlotteHornets NOTYETSUBMITTED
+CharlotteHornets Ajayi,Michael Out GLeague-Two-Way
+Allen,Grayson Questionable ConcussionProtocol
+Boswell,Kylan Out GLeague-Two-Way
+Hall,PJ Out GLeague-Two-Way
+Page8of10
+Injury Report: 11/27/26 08:15 PM
+Injury/Illness-LeftHipSoreness/
+Kalkbrenner,Ryan Probable
+Tightness
+Knueppel,Kon Out Injury/Illness-LeftHamstringStrain
+Schroder,Dennis Out Injury/Illness-LeftHamstringStrain
 08:00(ET) IND@CHI IndianaPacers NOTYETSUBMITTED
-ChicagoBulls NOTYETSUBMITTED
-OKC@MIL OklahomaCityThunder NOTYETSUBMITTED
+ChicagoBulls Awaka,Tobe Out GLeague-Two-Way
+Essengue,Noa Probable Injury/Illness-RightThumbSprain
+Powell,Norman Out Injury/Illness-RightHamstringStrain
+Sellers,Jaylin Out GLeague-Two-Way
+Smith,Jalen Probable Injury/Illness-GastrointestinalIllness
+Swain,Dailyn Out GLeague-OnAssignment
+Injury/Illness-RightMetacarpal
+Wilson,Caleb Out
+Fracture
+Injury/Illness-RightKnee/Injury
+OKC@MIL OklahomaCityThunder Holmgren,Chet Out
+Recovery
+Mara,Aday Out Injury/Illness-RightShinContusion
+Sorber,Thomas Out Injury/Illness-RightKneeSurgery
+Topic,Nikola Out Injury/Illness-LeftHipStrain
+Wallace,Cason Out Injury/Illness-LeftShoulderSurgery
+Williams,Jalen Out Injury/Illness-LeftAnkleSurgery
+Williams,Jaylin Out Injury/Illness-LowBackSpasms
+Page9of10
+Injury Report: 11/27/26 08:15 PM
 MilwaukeeBucks NOTYETSUBMITTED
 08:30(ET) PHI@HOU Philadelphia76ers NOTYETSUBMITTED
-HoustonRockets NOTYETSUBMITTED
-Page7of7
+Injury/Illness-RightPatellofemoral
+HoustonRockets Adams,Steven Questionable
+Pain
+Copeland,Quadir Out GLeague-Two-Way
+Phillips,Julian Out GLeague-Two-Way
+Page10of10
